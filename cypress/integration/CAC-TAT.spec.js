@@ -103,24 +103,42 @@ describe('Central de Atendimento ao CLiente TAT', () => {
         .should('not.be.checked')
     })
 
-    it('', () => {
-        
+    it('seleciona um arquivo da pasta fixtures', () => {
+        cy.get('input[type="file"]')
+        .selectFile('cypress/fixtures/example.json')
+        .should(input => {
+            // console.log(input)
+            expect(input[0].files[0].name).to.equal('example.json')
+        }) 
     })
 
-    it('', () => {
-        
+    it('seleciona um arquivo simulando um drag-and-drop', () => {
+        cy.get('input[type="file"]')
+        .selectFile('cypress/fixtures/example.json', {action: 'drag-drop'})
+        .should(input => {
+            // console.log(input)
+            expect(input[0].files[0].name).to.equal('example.json')
+        })
     })
 
-    it('', () => {
-        
+    it('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', () => {
+        cy.fixture('example.json').as('exampleFile')
+        cy.get('input[type="file"]')
+        .selectFile('@exampleFile')
+        .should(input => {
+            // console.log(input)
+            expect(input[0].files[0].name).to.equal('example.json')
+        }) 
     })
 
-    it('', () => {
-        
+    it('verifica que a política de privacidade abre em outra aba sem a necessidade de um clique', () => {
+        cy.get('#privacy a').should('have.attr', 'target', '_blank')
     })
 
-    it('', () => {
-        
+    it('acessa a página da política de privacidade removendo o target e então clicando no link', () => {
+        cy.get('#privacy a')
+        .invoke('removeAttr', 'target')
+        .click()
+        cy.contains('Talking About Testing').should('be.visible')
     })
-
 })
